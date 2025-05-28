@@ -1,1 +1,1 @@
-# Finplan
+# Finplan-structure
