@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package auth;
+
+option go_package = "github.com/khaldeezal/Finplan-structure/proto-definitions/gen/auth";
+// AuthService описывает gRPC-сервис аутентификации.
+// Содержит методы регистрации, логина и верификации токена.
+service AuthService {
+  // Register — регистрация нового пользователя.
+  rpc Register(RegisterRequest) returns (AuthResponse);
+  // Login — вход по email и паролю.
+  rpc Login(LoginRequest) returns (AuthResponse);
+  // VerifyToken — проверка действительности access-токена.
+  rpc VerifyToken(VerifyTokenRequest) returns (VerifyTokenResponse);
+}
+
+// RegisterRequest — данные для регистрации.
+message RegisterRequest {
+  string email = 1;
+  string password = 2;
+  string name = 3;
+}
+
+// LoginRequest — данные для входа.
+message LoginRequest {
+  string email = 1;
+  string password = 2;
+}
+
+// AuthResponse — ответ с токенами и сроком действия.
+message AuthResponse {
+  string access_token = 1;
+  string refresh_token = 2;
+  string expires_at = 3;
+}
+
+// VerifyTokenRequest — токен, который нужно проверить.
+message VerifyTokenRequest {
+  string token = 1;
+}
+
+// VerifyTokenResponse — результат проверки токена.
+message VerifyTokenResponse {
+  bool valid = 1;
+  string user_id = 2;
+}
