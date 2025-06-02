@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package user;
+option go_package = "github.com/khaldeezal/Finplan-structure/proto-definitions/gen/user;userpb";
+
+// UserService предоставляет методы для работы с пользовательским профилем.
+service UserService {
+  // Получить профиль пользователя по ID
+  rpc GetUserProfile(GetUserProfileRequest) returns (GetUserProfileResponse);
+
+  // Обновить имя, язык и валюту пользователя
+  rpc UpdateUserProfile(UpdateUserProfileRequest) returns (UpdateUserProfileResponse);
+}
+
+// Запрос на получение профиля пользователя
+message GetUserProfileRequest {
+  string user_id = 1; // ID пользователя
+}
+
+// Ответ с данными профиля
+message GetUserProfileResponse {
+  string user_id = 1;   // ID пользователя
+  string name = 2;      // Имя
+  string email = 3;     // Email (неизменяемый)
+  string currency = 4;  // Валюта ("RUB", "USD")
+  string language = 5;  // Язык ("ru", "en")
+}
+
+// Запрос на обновление профиля
+message UpdateUserProfileRequest {
+  string user_id = 1;   // ID пользователя
+  string name = 2;      // Новое имя
+  string currency = 3;  // Новая валюта
+  string language = 4;  // Новый язык
+}
+
+// Ответ на обновление профиля
+message UpdateUserProfileResponse {
+  bool success = 1; // true если успешно
+}

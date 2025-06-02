@@ -1,0 +1,85 @@
+syntax = "proto3";
+
+package finplan.transaction.v1;
+
+option go_package = "github.com/khaldeezal/Finplan-structure/proto-definitions/gen/transaction";
+
+import "google/protobuf/timestamp.proto";
+
+// Сервис для работы с транзакциями
+service TransactionService {
+  rpc AddTransaction(AddTransactionRequest) returns (AddTransactionResponse);
+  rpc ListTransactions(ListTransactionsRequest) returns (ListTransactionsResponse);
+  rpc DeleteTransaction(DeleteTransactionRequest) returns (DeleteTransactionResponse);
+  rpc GetBalance(GetBalanceRequest) returns (GetBalanceResponse);
+}
+
+// Тип транзакции: доход или расход
+enum TransactionType {
+  TRANSACTION_TYPE_UNSPECIFIED = 0;
+  INCOME = 1;   // Доход
+  EXPENSE = 2;  // Расход
+}
+
+// Запрос на добавление транзакции
+message AddTransactionRequest {
+  string user_id = 1;            // ID пользователя
+  string category_id = 2;        // ID категории
+  TransactionType type = 3;      // Тип: доход или расход
+  double amount = 4;             // Сумма
+  string description = 5;        // Описание
+  google.protobuf.Timestamp date = 6; // Дата транзакции
+}
+
+// Ответ на добавление транзакции
+message AddTransactionResponse {
+  string transaction_id = 1;
+}
+
+// Запрос на получение списка транзакций
+message ListTransactionsRequest {
+  string user_id = 1;  // ID пользователя
+  int32 limit = 2;     // Кол-во записей (для пагинации)
+  int32 offset = 3;    // Смещение (для пагинации)
+}
+
+// Ответ с списком транзакций
+message ListTransactionsResponse {
+  repeated Transaction transactions = 1;
+}
+
+// Запрос на удаление транзакции
+message DeleteTransactionRequest {
+  string transaction_id = 1;
+  string user_id = 2;
+}
+
+// Ответ на удаление транзакции
+message DeleteTransactionResponse {
+  bool success = 1;     // Успех удаления
+  string message = 2;   // Описание результата
+}
+
+// Запрос на получение баланса по пользователю
+message GetBalanceRequest {
+  string user_id = 1; // ID пользователя
+}
+
+// Ответ с балансом пользователя
+message GetBalanceResponse {
+  double income_total = 1;  // Сумма всех доходов
+  double expense_total = 2; // Сумма всех расходов
+  double balance = 3;       // Баланс: доходы - расходы
+}
+
+// Транзакция пользователя
+message Transaction {
+  string id = 1;                        // ID транзакции
+  string user_id = 2;                  // ID пользователя
+  string category_id = 3;              // ID категории
+  TransactionType type = 4;            // Тип: доход или расход
+  double amount = 5;                   // Сумма
+  string description = 6;              // Описание
+  google.protobuf.Timestamp date = 7;       // Дата транзакции
+  google.protobuf.Timestamp created_at = 8; // Дата создания
+}
