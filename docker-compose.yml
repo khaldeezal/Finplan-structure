@@ -1,0 +1,62 @@
+services:
+  postgres:
+    image: postgres:15
+    container_name: finplan-postgres
+    environment:
+      POSTGRES_DB: khaldee
+      POSTGRES_USER: khaldee
+      POSTGRES_PASSWORD: rewq1234
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    restart: always
+
+  auth-service:
+    build: ./services/auth-service
+    container_name: auth-service
+    env_file:
+      - ./services/auth-service/.env
+    depends_on:
+      - postgres
+    ports:
+      - "50051:50051"
+    restart: always
+
+  user-service:
+    build: ./services/user-service
+    container_name: user-service
+    env_file:
+      - ./services/user-service/.env
+    depends_on:
+      - postgres
+    ports:
+      - "50053:50053"
+    restart: always
+
+  transaction-service:
+    build: ./services/transaction-service
+    container_name: transaction-service
+    env_file:
+      - ./services/transaction-service/.env
+    depends_on:
+      - postgres
+    ports:
+      - "50052:50052"
+    restart: always
+
+  api-gateway:
+    build: ./services/api-gateway
+    container_name: api-gateway
+    env_file:
+      - ./services/api-gateway/.env
+    depends_on:
+      - auth-service
+      - user-service
+      - transaction-service
+    ports:
+      - "8080:8080"
+    restart: always
+
+volumes:
+  pg_data:
