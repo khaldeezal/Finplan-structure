@@ -18,13 +18,13 @@ import (
 func main() {
 	logger, err := zap.NewProduction()
 	if err != nil {
-		panic("Не удалось инициализировать логгер: " + err.Error()) // TODO: Подумать над graceful shutdown вместо panic
+		panic("Не удалось инициализировать логгер: " + err.Error())
 	}
 	defer logger.Sync()
 
 	// Переменные окружения из .env
 	if err := godotenv.Load(); err != nil {
-		logger.Error("Ошибка загрузки .env файла", zap.Error(err)) // TODO: Можно добавить алертинг на сбои env
+		logger.Error("Ошибка загрузки .env файла", zap.Error(err))
 		os.Exit(1)
 	}
 
