@@ -1,0 +1,35 @@
+name: Go CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.22'
+
+      - name: Run go mod tidy for each service
+        run: |
+          for service in services/*; do
+            if [ -f "$service/go.mod" ]; then
+              echo "Running go mod tidy in $service"
+              (cd "$service" && go mod tidy)
+            fi
+          done
+
+      - name: Run go test for each service
+        run: |
+          for service in services/*; do
+            if [ -f "$service/go.mod" ]; then
+              echo "Running go test in $service"
+              (cd "$service" && go test ./...)
+            fi
+          done
