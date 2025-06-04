@@ -1,0 +1,6 @@
+# Environment files
+*.env
+
+# IDE files
+.idea/
+.DS_Store

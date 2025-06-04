@@ -50,7 +50,7 @@ func main() {
 	// Регистрация grpc reflection для поддержки grpcurl и других клиентов
 	reflection.Register(grpcServer)
 
-	addr := os.Getenv("TRANSACTION_SERVICE_ADDR")
+	addr := os.Getenv("SERVICE_ADDR")
 	if addr == "" {
 		addr = ":50052"
 	}

@@ -47,8 +47,8 @@ func main() {
 	}
 	userService := services.NewAuthService(userRepo, jwtSecret, logger)
 
-	// Адрес из переменной окружения AUTH_SERVICE_ADDR
-	addr := os.Getenv("AUTH_SERVICE_ADDR")
+	// Адрес из переменной окружения SERVICE_ADDR
+	addr := os.Getenv("SERVICE_ADDR")
 	if addr == "" {
 		addr = ":50051"
 	}

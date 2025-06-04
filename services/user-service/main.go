@@ -25,13 +25,17 @@ func main() {
 	defer logger.Sync()
 
 	// Подключаемся к PostgreSQL
-	db, err := sql.Open("postgres", "host=localhost port=5432 user=postgres password=rewq1234 dbname=khaldee sslmode=disable")
+	dsn := os.Getenv("DATABASE_URL")
+	if dsn == "" {
+		dsn = "postgres://user:password@localhost:5432/dbname?sslmode=disable"
+	}
+	db, err := sql.Open("postgres", dsn)
 	if err != nil {
 		logger.Fatal("Failed to connect to database", zap.Error(err))
 	}
 	defer db.Close()
 
-	addr := os.Getenv("USER_SERVICE_ADDR")
+	addr := os.Getenv("SERVICE_ADDR")
 	if addr == "" {
 		addr = ":50053"
 	}
