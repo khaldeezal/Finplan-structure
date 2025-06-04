@@ -75,7 +75,6 @@ func (s *authService) Register(ctx context.Context, email, password, name string
 // Создаёт JWT-токен с userID, живёт 72 часа
 func (s *authService) generateJWT(userID string) (string, error) {
 	s.logger.Info("Generating JWT", zap.String("userID", userID))
-	s.logger.Info("JWT Secret at generateJWT", zap.String("secret", s.jwtSecret))
 	claims := jwt.MapClaims{
 		"user_id": userID,
 		"exp":     time.Now().Add(time.Hour * 72).Unix(), // 72 часа действия токена
