@@ -1,0 +1,27 @@
+# macOS artifacts
+.DS_Store
+
+# IDE directories
+.idea/
+.vscode/
+
+# Environment files
+*.env
+
+# Go build artifacts
+bin/
+vendor/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# Editor swap files
+*~
+
+# Build directories
+build/
+dist/
